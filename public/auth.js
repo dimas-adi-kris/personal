@@ -47,14 +47,16 @@ function login(db) {
                 email: user.email,
                 token: token,
               },
+            }).then(()=>{
+              localStorage.setItem("token", token);
+              window.location.href = "/unauthorized.html";
             });
-            localStorage.setItem("token", token);
           }else{
-            localStorage.setItem("token", doc.data()['token'])
+            localStorage.setItem("token", doc.data().data.token)
+            window.location.href = "/main.html";
           }
         });
       // ...
-      window.location.href = "/main.html";
     })
     .catch((error) => {
       // Handle Errors here.
@@ -78,6 +80,5 @@ function authentication(db){
   let hash_token = cyrb53(token);
   if(hash_token!=262920812735202){
     window.location.href = "/unauthorized.html";
-    
   }
 }

@@ -27,3 +27,24 @@ function submit_money(db, description, money_in, money_out) {
     });
 
 }
+
+function getWallet(db) {
+    let list_wallets = localStorage.getItem('wallets');
+    if (list_wallets) {
+        list_wallets = JSON.parse(list_wallets);
+    }
+    else{
+        list_wallets = [];
+        let wallets_collection = db.collection('wallets');
+        wallets_collection.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, '=>', doc.data());
+                list_wallets.push({
+                    id: doc.id,
+                    data: doc.data()
+                });
+            });
+            localStorage.setItem('wallets', JSON.stringify(list_wallets));
+        });
+    }
+}

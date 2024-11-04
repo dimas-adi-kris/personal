@@ -42,17 +42,15 @@ function login(db) {
             let token = '';
             users.doc(user.uid).set({
               id: user.uid,
-              data: {
-                name: user.displayName,
-                email: user.email,
-                token: token,
-              },
+              name: user.displayName,
+              email: user.email,
+              token: token,
             }).then(()=>{
               localStorage.setItem("token", token);
               window.location.href = "/unauthorized.html";
             });
           }else{
-            localStorage.setItem("token", doc.data().data.token)
+            localStorage.setItem("token", doc.data().token)
             window.location.href = "/main.html";
           }
         });

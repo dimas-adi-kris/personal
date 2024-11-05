@@ -57,3 +57,15 @@ function getWallet(db) {
         });
     }
 }
+
+async function getTransaction(db) {
+    let data = [];
+    let tc = await db.collection('transaction').orderBy("created_timestamp").get();
+    tc.forEach(doc => {
+        data.push({
+            ...doc.data(),
+        });
+    });
+    return data;
+    
+}

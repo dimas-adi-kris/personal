@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/11.0.1/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/11.0.1/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/11.0.1/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <!-- import bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- import jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
+        crossorigin="anonymous"></script>
+
+    <!-- import datatable -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap4.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap4.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">
+                                            <a href="/main.html">
+                                                Main
+                                            </a>
+                                        </h1>
+                                    </div>
+                                    <div>
+                                        Toggle column:
+                                        <a class="toggle-vis" data-column="0">Description</a> -
+                                        <a class="toggle-vis" data-column="1">Money In</a> -
+                                        <a class="toggle-vis" data-column="2">Money Out</a> -
+                                        <a class="toggle-vis" data-column="3">Date time</a>
+                                    </div>
+                                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Money In</th>
+                                                <th>Money Out</th>
+                                                <th>Date time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Money In</th>
+                                                <th>Money Out</th>
+                                                <th>Date time</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <div class="text-center">
+                                        <a class="small" href="#" id="logout">Logout?</a>
+                                    </div>
+                                    <p id="load">Firebase SDK Loading&hellip;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="auth.js"></script>
+    <script src="../db.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var db = false;
+            const loadEl = document.querySelector("#load");
+            try {
+                let app = firebase.app();
+                let features = ["auth", "firestore"].filter(
+                    (feature) => typeof app[feature] === "function"
+                );
+                loadEl.textContent = `Firebase SDK loaded with ${features.join(
+                    ", "
+                )}`;
+                db = firebase.firestore();
+                authentication(db);
+                var table = new DataTable('#example', {
+                    order: [[3, 'desc']]
+                });
+                $(document).ready(function () {
+                    getTransaction(db).then((data) => {
+                        data.forEach(el => {
+                            console.log(el);
+                            const date =
+                                new Date(el.created_timestamp);
+                            console.log(date * 1000);
+                            table.rows.add([
+                                [
+                                    el.description,
+                                    el.money_in,
+                                    el.money_out,
+                                    date
+                                ]
+                            ]).draw();
+                        });
+                    })
+                    document.querySelectorAll('a.toggle-vis').forEach((el) => {
+                        el.addEventListener('click', function (e) {
+                            e.preventDefault();
+
+                            let columnIdx = e.target.getAttribute('data-column');
+                            let column = table.column(columnIdx);
+
+                            // Toggle the visibility
+                            column.visible(!column.visible());
+                        });
+                    });
+                });
+
+                // database(db);
+            } catch (e) {
+                console.error(e);
+                loadEl.textContent =
+                    "Error loading the Firebase SDK, check the console.";
+            }
+            $("#logout").on('click', function () {
+                localStorage.removeItem("token");
+                window.location.href = "/";
+            })
+        });
+
+    </script>
+
+    <script>
+    </script>
+</body>
+
+</html>

@@ -24,7 +24,16 @@ function submit_money(db, description, money_in, money_out) {
         money_out: money_out,
         date_time: new Date(date_now),
         created_timestamp: date_now,
+    })
+    .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        alert("Document written with ID: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+        alert("Error adding document: ", error);
     });
+    
 
 }
 

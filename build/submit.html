@@ -1,0 +1,54 @@
+
+<body>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Logged in!</h1>
+                                    </div>
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">
+                                            <a href="/dashboard.html">
+                                                Dashboard
+                                            </a>
+                                        </h1>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <label for="description" class="form-label">description</label>
+                                            <input type="text" class="form-control form-control-user" name="description"
+                                                placeholder="Enter Description..." />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="money_in" class="form-label">Money In</label>
+                                            <input type="number" class="form-control form-control-user"
+                                                name="money_in" placeholder="Enter the number..." />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="money_out" class="form-label">Money out</label>
+                                            <input type="number" class="form-control form-control-user"
+                                                name="money_out" placeholder="Enter the number..." />
+                                        </div>
+                                        <a href="#" id="submit" class="btn btn-primary">Submit</a>
+                                    </form>
+                                    <hr />
+                                    <div class="text-center">
+                                        <a class="small" href="#" id="logout">Logout?</a>
+                                    </div>
+                                    <p id="load">Firebase SDK Loading&hellip;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

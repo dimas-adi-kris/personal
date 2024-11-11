@@ -13,11 +13,47 @@ const cyrb53 = (str, seed = 0) => {
 
 	return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
-function login(db) {
+function initFirebase() {
+	let firebase_load = '';
+	let db = false;
+    try {
+        let app = firebase.app();
+        let features = [
+            "auth",
+            "database",
+            "firestore",
+            "functions",
+            "messaging",
+            "storage",
+            "analytics",
+            "remoteConfig",
+            "performance",
+        ].filter((feature) => typeof app[feature] === "function");
+        firebase_load = `Firebase SDK loaded with ${features.join(
+            ", "
+        )}`;
+        db = firebase.firestore();
+		return {
+			firebase_load,
+			db
+		};
+
+    } catch (e) {
+        console.error(e);
+        firebase_load =
+            "Error loading the Firebase SDK, check the console.";
+		return {
+			firebase_load,
+			db: false
+		};
+    }
+}
+function login(db,$location) {
 	var provider = new firebase.auth.GoogleAuthProvider();
 	let is_logged_in = localStorage.getItem("token");
 	if (is_logged_in) {
-		window.location.href = "/main.html";
+		// $location.path('#!form_transaction');
+		window.location.href = "#!form_transaction";
 	} else {
 		firebase
 			.auth()
@@ -54,8 +90,9 @@ function login(db) {
 								window.location.href = "/unauthorized.html";
 							});
 						} else {
-							localStorage.setItem("token", doc.data().token)
-							window.location.href = "/main.html";
+							localStorage.setItem("token", doc.data().token);
+							// $location.path('/form_transaction');
+							window.location.href = "#!form_transaction";
 						}
 					});
 				// ...
@@ -97,4 +134,16 @@ function download(filename, text) {
 	element.click();
 
 	document.body.removeChild(element);
+}
+function loginPage ($scope, $http, $location) {
+    $scope.firebase_load = 'Firebase SDK Loading...';
+	let {firebase_load, db} = initFirebase();
+	$scope.firebase_load = firebase_load;
+    $scope.signIn = function () {
+        login(db,$location);
+    }
+
+    // $("a[id='signIn']").on('click', function () {
+    //     login(db);
+    // })
 }

@@ -33,8 +33,6 @@ function submit_money(db, description, money_in, money_out) {
         console.error("Error adding document: ", error);
         alert("Error adding document: ", error);
     });
-    
-
 }
 
 function getWallet(db) {
@@ -50,7 +48,7 @@ function getWallet(db) {
                 console.log(doc.id, '=>', doc.data());
                 list_wallets.push({
                     id: doc.id,
-                    data: doc.data()
+                    ...doc.data()
                 });
             });
             localStorage.setItem('wallets', JSON.stringify(list_wallets));
@@ -64,6 +62,7 @@ async function getTransaction(db) {
     tc.forEach(doc => {
         data.push({
             ...doc.data(),
+            id: doc.id,
         });
     });
     return data;

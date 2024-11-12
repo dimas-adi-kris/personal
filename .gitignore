@@ -23,3 +23,5 @@ expo-env.d.ts
 # @end expo-cli
 build/.vscode/settings.json
 *.cache
+.firebase/hosting.cHVibGlj.cache
+.vscode/launch.json

@@ -87,10 +87,12 @@ function login(db,$location) {
 								token: token,
 							}).then(() => {
 								localStorage.setItem("token", token);
+								localStorage.setItem("user_id", user.uid);
 								window.location.href = "/unauthorized.html";
 							});
 						} else {
 							localStorage.setItem("token", doc.data().token);
+							localStorage.setItem("user_id", user.uid);
 							// $location.path('/form_transaction');
 							window.location.href = "#!form_transaction";
 						}
@@ -121,6 +123,11 @@ function authentication(db) {
 	if (hash_token != 262920812735202) {
 		window.location.href = "/unauthorized.html";
 	}
+
+	let user_id = localStorage.getItem('user_id');
+	if (!user_id) {
+		window.location.href = "/logout";
+	}
 }
 
 function download(filename, text) {
@@ -146,4 +153,10 @@ function loginPage ($scope, $http, $location) {
     // $("a[id='signIn']").on('click', function () {
     //     login(db);
     // })
+}
+
+function logout($scope){
+	localStorage.removeItem("token");
+	localStorage.removeItem("user_id");
+	window.location.href = "/";
 }

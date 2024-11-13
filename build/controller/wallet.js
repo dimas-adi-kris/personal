@@ -1,4 +1,4 @@
-function wallet_dashboard($scope, $http, $location) {
+function walletDashboard($scope, $http, $location) {
     let {firebase_load, db} = initFirebase();
     console.log(
         {
@@ -7,6 +7,11 @@ function wallet_dashboard($scope, $http, $location) {
             $location
         }
     );
+    $.exposed = {
+        $scope,
+        $http,
+        $location
+    }
     $scope.submit = function () {
         let name = $scope.name;
         console.log(
@@ -39,6 +44,7 @@ function add_wallet(db, name) {
     let date_now = Date.now();
     tc.add({
         name: name,
+        user_id: localStorage.getItem("user_id"),
         date_time: new Date(date_now),
         created_timestamp: date_now,
     })

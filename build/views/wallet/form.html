@@ -1,14 +1,19 @@
-<form class="user">
-    <div class="form-group">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control form-control-user" name="name" placeholder="Enter name..."
-            ng-model="name_wallet" />
-        <input type="text" class="form-control form-control-user" name="description" placeholder="Enter Description..."
-            ng-model="description" />
-    </div>
-    <div class="form-group">
-        <button ng-click="submit()" type="button" class="btn btn-primary">
-            Submit
-        </button>
-    </div>
-</form>
+<div ng-app="personal" ng-controller="walletForm">
+    <form class="user">
+        form
+        <h1 class="h1">{{name}}</h1>
+        <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control form-control-user" name="name" placeholder="Enter name..."
+                ng-model="name_wallet" />
+            <input type="text" class="form-control form-control-user" name="description"
+                placeholder="Enter Description..." ng-model="description" />
+        </div>
+        <div class="form-group">
+            <button ng-click="submit()" type="button" class="btn btn-primary">
+                Submit
+            </button>
+        </div>
+    </form>
+
+</div>

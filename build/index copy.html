@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+<head ng-if="isLocal" ng-include="'/head_online.html'">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Welcome to Firebase Hosting</title>
@@ -130,9 +130,7 @@
     <!-- Online - end -->
 
     <!-- Offline - start -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" ng-if="isLocal">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous" ng-if="!isLocal"> -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <script src="assets/js/jquery-3.7.0.min.js"></script>
     <script src="assets/js/angular.min.js"></script>
     <link rel="stylesheet" href="assets/css/angular-csp.min.css">
@@ -149,14 +147,14 @@
 <body ng-app="personal">
     <div ng-view></div>
 </body>
-<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script> -->
+    crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-    <script src="./db.js"></script>
-    <script src="./controller/auth.js"></script>
+<script src="./controller/auth.js"></script>
+<script src="./db.js"></script>
 <script src="./controller/transaction.js"></script>
 <script src="./controller/wallet.js"></script>
 
@@ -166,13 +164,19 @@
     var app = false;
     var db = false;
 
+    let parent = {
+        pp: function (x) {
+            console.log(x);
+        },
+        status: "tsestset",
+    }
+
     var angular_app = angular.module("personal", ["ngRoute"]);
     angular_app.controller("main", loginPage);
-    angular_app.controller("form_transaction", ["$scope", "$sce",'$routeParams', formTransaction]);
+    angular_app.controller("form_transaction", ["$scope", "$sce", formTransaction]);
     angular_app.controller("dashboard", dashboard);
     angular_app.controller("walletDashboard", ["$scope", walletDashboard]);
     angular_app.controller("logout", logout);
-    angular_app.controller("head_tag", logout);
 
     angular_app.run(function ($rootScope, $location) {
         console.log({ $rootScope, $location });
@@ -210,14 +214,6 @@
                 templateUrl: "views/main_.html"
             })
             .when("/form_transaction", {
-                controller: "form_transaction",
-                templateUrl: "views/form_transaction.html"
-            })
-            .when("/form_transaction", {
-                controller: "form_transaction",
-                templateUrl: "views/form_transaction.html"
-            })
-            .when("/form_transaction/:id", {
                 controller: "form_transaction",
                 templateUrl: "views/form_transaction.html"
             })

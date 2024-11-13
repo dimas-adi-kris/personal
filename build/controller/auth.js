@@ -13,41 +13,6 @@ const cyrb53 = (str, seed = 0) => {
 
 	return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
-function initFirebase() {
-	let firebase_load = '';
-	let db = false;
-    try {
-        let app = firebase.app();
-        let features = [
-            "auth",
-            "database",
-            "firestore",
-            "functions",
-            "messaging",
-            "storage",
-            "analytics",
-            "remoteConfig",
-            "performance",
-        ].filter((feature) => typeof app[feature] === "function");
-        firebase_load = `Firebase SDK loaded with ${features.join(
-            ", "
-        )}`;
-        db = firebase.firestore();
-		return {
-			firebase_load,
-			db
-		};
-
-    } catch (e) {
-        console.error(e);
-        firebase_load =
-            "Error loading the Firebase SDK, check the console.";
-		return {
-			firebase_load,
-			db: false
-		};
-    }
-}
 function login(db,$location) {
 	var provider = new firebase.auth.GoogleAuthProvider();
 	let is_logged_in = localStorage.getItem("token");
@@ -159,4 +124,9 @@ function logout($scope){
 	localStorage.removeItem("token");
 	localStorage.removeItem("user_id");
 	window.location.href = "/";
+}
+
+function head_tag  ($scope) {
+	let {firebase_load, db} = initFirebase();
+	console.log($scope);
 }

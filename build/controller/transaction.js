@@ -1,13 +1,17 @@
 function formTransaction($scope, $sce, $routeParams) {
     let {firebase_load, db} = initFirebase();
     $scope.params = $routeParams;
+    $("input[name='created_timestamp']").value = new Date().toLocaleString();
     if ($scope.params.id) {
         getTransactionById($scope.params.id).then(function (data) {
-            $.exposed_data = data;
+            $.exposed_data = {
+                data,
+                $scope
+            };
             $scope.description = data.description;
             $scope.money_in = data.money_in;
             $scope.money_out = data.money_out;
-            $scope.created_timestamp = new Date(data.created_timestamp).toLocaleString();
+            $scope.created_timestamp = new Date(data.created_timestamp);
         })
     }
     $scope.firebase_load = firebase_load;
@@ -25,8 +29,9 @@ function formTransaction($scope, $sce, $routeParams) {
         try {
             if ($scope.params.id) {
                 let id = $scope.params.id;
-                let created_timestamp = new Date($scope.created_timestamp);
-                editTransaction({id, description, money_in, money_out, created_timestamp}).then(function (data) {
+                let created_timestamp = convertToTimestamp(new Date($scope.created_timestamp));
+                let date_time = new Date($scope.created_timestamp).toString();
+                editTransaction({id, description, money_in, money_out, created_timestamp, date_time}).then(function (data) {
                     loading = `<i class="bi bi-check text-success"></i>`;
                     $("#loading").html(loading);    
                     console.log(data);
@@ -97,7 +102,7 @@ function addTransaction(db, fields) {
        return tc.add({
             ...fields,
             user_id: localStorage.getItem("user_id"),
-            date_time: new Date(date_now),
+            date_time: new Date(date_now).toString(),
             created_timestamp: date_now,
         })
         .then((docRef) => {
@@ -122,7 +127,6 @@ function editTransaction(fields){
     }, { merge: true })
     .then((docRef) => {
         return {
-            id: docRef.id,
             ...fields,
             status: "success",
         }

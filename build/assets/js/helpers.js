@@ -15,3 +15,17 @@ function actionButtons() {
     </div>
     `
 }
+
+function convertTZ(date, tzString) {
+  return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+}
+
+function convertToDateTime(date) {
+    return (new Date(convertToTimestamp(date)).toISOString()).slice(0, -1)
+}
+
+function convertToTimestamp(date) {
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+  date.getUTCDate(), date.getUTCHours(),
+  date.getUTCMinutes(), date.getUTCSeconds())
+}

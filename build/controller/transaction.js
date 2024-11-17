@@ -1,4 +1,28 @@
-
+function getTransactionFields() {
+    return [
+        {
+            name: "description",
+            type: "text",
+            label: "Description"
+        },
+        {
+            name: "money_in",
+            type: "number",
+            label: "Money In"
+        },
+        {
+            name: "money_out",
+            type: "number",
+            label: "Money out"
+        },
+        {
+            name: "wallet_id",
+            type: "select",
+            label: "Wallet",
+            options: JSON.parse(localStorage.getItem("wallets"))
+        }
+    ]
+}
 function fixTransaction() {
     let { firebase_load, db } = initFirebase();
     getTransaction(db).then(function (data) {
@@ -13,21 +37,26 @@ function formTransaction($scope, $sce, $routeParams) {
     let { firebase_load, db } = initFirebase();
     $scope.params = $routeParams;
     $("input[name='created_timestamp']").value = new Date().toLocaleString();
+    $scope.firebase_load = firebase_load;
+    $scope.title = "Add Transaction";
+    $scope.loading = "";
+   $scope.wallets = {
+    availableOptions: JSON.parse(localStorage.getItem("wallets")) ,
+    // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
+    };
     if ($scope.params.id) {
         getTransactionById($scope.params.id).then(function (data) {
             $.exposed_data = {
                 data,
                 $scope
             };
-        $scope.description = data.description;
-        $scope.money_in = data.money_in;
-        $scope.money_out = data.money_out;
-        $scope.created_timestamp = new Date(data.created_timestamp);
+            $scope.description = data.description;
+            $scope.money_in = data.money_in;
+            $scope.money_out = data.money_out;
+            $scope.created_timestamp = new Date(data.created_timestamp);
+            $scope.wallets.selected = data.wallet_id;
         })
     }
-    $scope.firebase_load = firebase_load;
-    $scope.title = "Add Transaction";
-    $scope.loading = "";
     console.log({ $scope, $sce, $routeParams });
     $scope.submit = function () {
         console.log($scope);
@@ -41,6 +70,8 @@ function formTransaction($scope, $sce, $routeParams) {
         let date = $scope.created_timestamp || new Date();
         form["created_timestamp"] = convertToTimestamp(date);
         form['date_time'] = date.toString();
+        form['wallet_id'] = $scope.wallets.selected;
+
         // let description = $scope.description;
         // let money_in = $scope.money_in || 0;
         // let money_out = $scope.money_out || 0;

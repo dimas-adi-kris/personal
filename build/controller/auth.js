@@ -38,6 +38,7 @@ function login(db,$location) {
 					user,
 				});
 				let users = db.collection("users");
+				initWallet();
 				// add if not exist
 				users
 					.doc(user.uid)
@@ -114,16 +115,19 @@ function loginPage ($scope, $http, $location) {
     $scope.signIn = function () {
         login(db,$location);
     }
-
-    // $("a[id='signIn']").on('click', function () {
-    //     login(db);
-    // })
 }
 
 function logout($scope){
 	localStorage.removeItem("token");
 	localStorage.removeItem("user_id");
 	window.location.href = "/";
+}
+
+function initWallet () {
+	let {firebase_load, db} = initFirebase();
+	getWallet(db).then(function (data) {
+		localStorage.setItem("wallets", JSON.stringify(data));
+	});	
 }
 
 function head_tag  ($scope) {

@@ -1,4 +1,4 @@
-<div class="container" ng-app="personal">
+<div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-12 col-md-9">
@@ -10,9 +10,7 @@
                         <div class="col-lg-12">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <a href="/form_transaction/nnhkFBxjwT41YsAmBfS1" class="btn btn-primary btn-sm"><i class="bi bi-pencil"></i></a>
                                     <h1 class="h4 text-gray-900 mb-4" ng-include="'/views/topbar/route.html'">
-
                                     </h1>
                                 </div>
                             </div>
@@ -23,8 +21,6 @@
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" class="form-control form-control-user" name="name"
                                             placeholder="Enter name..." ng-model="name" />
-                                        <input type="text" class="form-control form-control-user" name="description"
-                                            placeholder="Enter Description..." ng-model="description" />
                                     </div>
                                     <div class="form-group">
                                         <button ng-click="submit()" type="button" class="btn btn-primary">
@@ -51,8 +47,7 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                                <div class="text-center">
-                                    <a class="small" href="#" id="logout">Logout?</a>
+                                <div class="text-center" ng-include="'/views/sign_out.html'">
                                 </div>
                                 <p id="load">{{firebase_load}}</p>
                             </div>

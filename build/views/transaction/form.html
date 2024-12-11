@@ -19,11 +19,15 @@
                                     <h1 class="h4 text-gray-900 mb-4" ng-include="'/views/topbar/route.html'">
                                     </h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" name="transactionForm">
                                     <div class="form-group">
                                         <label for="description" class="form-label">description</label>
                                         <input type="text" class="form-control form-control-user" name="description"
-                                            placeholder="Enter Description..." ng-model="description" />
+                                            placeholder="Enter Description..." ng-model="description" required />
+                                        <span style="color:red"
+                                            ng-show="transactionForm.description.$dirty && transactionForm.description.$invalid">
+                                            <span ng-show="transactionForm.description.$error.required">description is
+                                                required.</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="money_in" class="form-label">Money In</label>
@@ -37,12 +41,31 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="created_timestamp" class="form-label">Created timestamp</label>
-                                        <input 
-                                        type="datetime-local" class="form-control form-control-user" name="created_timestamp"
-                                            placeholder="Enter the number..." ng-model="created_timestamp" />
+                                        <input type="datetime-local" class="form-control form-control-user"
+                                            name="created_timestamp" placeholder="Enter the number..."
+                                            ng-model="created_timestamp" value="{{created_timestamp}}" />
                                     </div>
                                     <div class="form-group">
-                                        <button ng-click="submit()" type="button" class="btn btn-primary">
+                                      <label for="wallet_id">select wallet</label>
+                                      <!-- <tt>option = {{wallets.selected}}</tt><br/> -->
+                                      
+                                    <select class="form-control" name="wallet_id" id="wallet_id"
+                                    ng-options="option.name for option in wallets.availableOptions track by option.id"
+                                    ng-model="wallets.selected"></select>
+                                      <!-- <select class="form-control" name="wallet_id" id="wallet_id"
+                                        ng-options="option.name for option in wallets.selected track by option.id"
+                                        ng-model="wallets.selected"></select> -->
+
+                                      <!-- <select class="form-control" id="wallet_id" ng-model="wallet_id"
+                                      >
+                                        <option ng-repeat="wallet in wallets.data" ng-value="wallet">
+                                            {{wallet.name}}
+                                        </option>
+                                      </select> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <button ng-click="submit()" type="button" class="btn btn-primary" 
+                                        ng-disabled="transactionForm.description.$dirty && transactionForm.description.$invalid">
                                             Submit
                                         </button>
                                         <div id="loading" style="font-size: 30px"></div>

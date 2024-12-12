@@ -76,6 +76,7 @@ async function getWallet(db){
 export default {
     dashboard,
     add_wallet,
+    getWallet
     
 }
 

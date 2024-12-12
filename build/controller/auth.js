@@ -1,5 +1,12 @@
 import { initFirebase } from "/db.js";
+import Wallet from "./wallet.js";
 
+/**
+ * cyrb53: A non-cryptographic string hash function designed to be fast while maintaining a good distribution for non-pathological keys.
+ * @param {string} str - The string to hash.
+ * @param {number} [seed=0] - The seed value to use.
+ * @returns {number} The hash value.
+ */
 const cyrb53 = (str, seed = 0) => {
 	let h1 = 0xdeadbeef ^ seed,
 		h2 = 0x41c6ce57 ^ seed;
@@ -41,6 +48,7 @@ function login(db, $location) {
 				});
 				let users = db.collection("users");
 				initWallet();
+				initTag();
 				// add if not exist
 				users.doc(user.uid).get().then((doc) => {
 					if (!doc.exists) {
@@ -125,14 +133,21 @@ function logout($scope) {
 }
 
 function initWallet() {
-	let { firebase_load, db } = initFirebase();
+	let { db } = initFirebase();
 	getWallet(db).then(function (data) {
 		sessionStorage.setItem("wallets", JSON.stringify(data));
 	});
 }
 
+function initTag() {
+	let { db } = initFirebase();
+	getTag(db).then(function (data) {
+		sessionStorage.setItem("tags", JSON.stringify(data));
+	});
+}
+
 function head_tag($scope) {
-	let { firebase_load, db } = initFirebase();
+	let { db } = initFirebase();
 	console.log($scope);
 }
 
@@ -144,5 +159,6 @@ export default {
 	loginPage,
 	logout,
 	initWallet,
+	initTag,
 	head_tag
 }

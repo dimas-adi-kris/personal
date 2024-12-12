@@ -48,6 +48,10 @@ function formTransaction($scope, $sce, $routeParams) {
         availableOptions: JSON.parse(sessionStorage.getItem("wallets")),
         // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
     };
+    $scope.tags = {
+        availableOptions: JSON.parse(sessionStorage.getItem("tags")),
+        selectedOption: { id: '3', name: 'Option C' } //This sets the default value of the select in the ui
+    }
     if ($scope.params.id) {
         let transaction = new Transaction();
         transaction.findById($scope.params.id).then(function (data) {
@@ -61,6 +65,7 @@ function formTransaction($scope, $sce, $routeParams) {
             $scope.money_out = data.money_out;
             $scope.created_timestamp = new Date(data.created_timestamp);
             $scope.wallets.selected = data.wallet_id;
+            $scope.tags.selected = data.tag_id;
         })
     }
     console.log({ $scope, $sce, $routeParams });
@@ -77,6 +82,7 @@ function formTransaction($scope, $sce, $routeParams) {
         form["created_timestamp"] = convertToTimestamp(date);
         form['date_time'] = date.toString();
         form['wallet_id'] = $scope.wallets.selected;
+        form['tag_id'] = $scope.tags.selected;
 
         // let description = $scope.description;
         // let money_in = $scope.money_in || 0;

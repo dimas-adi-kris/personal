@@ -120,7 +120,7 @@
                 }
             })
             $("#logout").on('click', function(){
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 window.location.href = "/";
             })
         });

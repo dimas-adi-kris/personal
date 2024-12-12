@@ -50,3 +50,5 @@ function initFirebase() {
 		};
     }
 }
+
+export { database, initFirebase }

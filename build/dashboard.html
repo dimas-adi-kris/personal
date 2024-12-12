@@ -154,7 +154,7 @@
                     "Error loading the Firebase SDK, check the console.";
             }
             $("#logout").on('click', function () {
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
                 window.location.href = "/";
             })
         });

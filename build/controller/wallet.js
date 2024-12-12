@@ -44,7 +44,7 @@ function add_wallet(db, name) {
     let date_now = Date.now();
     tc.add({
         name: name,
-        user_id: localStorage.getItem("user_id"),
+        user_id: sessionStorage.getItem("user_id"),
         date_time: new Date(date_now),
         created_timestamp: date_now,
     })
@@ -72,7 +72,7 @@ async function getWallet(db){
 }
 
 // function getWallet(db) {
-//     let list_wallets = localStorage.getItem('wallets');
+//     let list_wallets = sessionStorage.getItem('wallets');
 //     if (list_wallets) {
 //         list_wallets = JSON.parse(list_wallets);
 //     }
@@ -87,7 +87,7 @@ async function getWallet(db){
 //                     ...doc.data()
 //                 });
 //             });
-//             localStorage.setItem('wallets', JSON.stringify(list_wallets));
+//             sessionStorage.setItem('wallets', JSON.stringify(list_wallets));
 //         });
 //     }
 // }

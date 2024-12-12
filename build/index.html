@@ -143,7 +143,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap-icons.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> -->
     <!-- Offline - end -->
-    <script type="text/javascript" charset="utf8" src="assets/js/helpers.js"></script>
+    <!-- <script type="text/javascript" charset="utf8" src="assets/js/helpers.js"></script> -->
 </head>
 
 <body ng-app="personal">
@@ -153,24 +153,26 @@
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script> -->
 <script type="text/javascript" charset="utf8" src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="./db.js"></script>
-<script src="./controller/auth.js"></script>
-<script src="./controller/transaction.js"></script>
+<!-- <script src="./db.js"></script> -->
+<!-- <script src="./controller/auth.js"></script> -->
+<script type="module" src="./controller/transaction.js"></script>
 <script src="./controller/wallet.js"></script>
 
 <!-- angular_app.controller("walletForm", ["$scope", walletForm]); -->
-<script>
+<script type="module">
+    import Transaction from "./controller/transaction.js";
+    import Auth from "./controller/auth.js";
     var angular_app = false;
     var app = false;
     var db = false;
 
     var angular_app = angular.module("personal", ["ngRoute"]);
-    angular_app.controller("main", loginPage);
-    angular_app.controller("form_transaction", ["$scope", "$sce", '$routeParams', formTransaction]);
-    angular_app.controller("dashboard", dashboard);
+    angular_app.controller("main", Auth.loginPage);
+    angular_app.controller("form_transaction", ["$scope", "$sce", '$routeParams', Transaction.formTransaction]);
+    angular_app.controller("dashboard", Transaction.dashboard);
     angular_app.controller("walletDashboard", ["$scope", walletDashboard]);
-    angular_app.controller("logout", logout);
-    angular_app.controller("head_tag", logout);
+    angular_app.controller("logout", Auth.logout);
+    angular_app.controller("head_tag", Auth.logout);
 
     angular_app.run(function ($rootScope, $location) {
         console.log({ $rootScope, $location });
@@ -179,13 +181,12 @@
         $rootScope.isLocal = ($location.host() == "localhost" || $location.host() == "127.0.0.1") ? true : false;
 
         $rootScope.logout = function () {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user_id");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user_id");
             window.location.href = "/";
         }
-        let user_id = localStorage.getItem('user_id');
+        let user_id = sessionStorage.getItem('user_id');
         if (!user_id && ($location.path() != "/" && $location.path() != "")) {
-
             $rootScope.logout()
         }
 
@@ -200,7 +201,7 @@
 
     // angular_app.service("logout", function () {
     //     this.logout = function () {
-    //         localStorage.removeItem("token");
+    //         sessionStorage.removeItem("token");
     //         window.location.href = "/";
     //     }
     // });

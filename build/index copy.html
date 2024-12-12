@@ -185,11 +185,11 @@
         $rootScope.isLocal = ($location.host() == "localhost" || $location.host() == "127.0.0.1") ? true : false;
 
         $rootScope.logout = function () {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user_id");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user_id");
             window.location.href = "/";
         }
-        let user_id = localStorage.getItem('user_id');
+        let user_id = sessionStorage.getItem('user_id');
         if (!user_id && ($location.path() != "/" && $location.path() != "")) {
 
             $rootScope.logout()
@@ -202,7 +202,7 @@
 
     // angular_app.service("logout", function () {
     //     this.logout = function () {
-    //         localStorage.removeItem("token");
+    //         sessionStorage.removeItem("token");
     //         window.location.href = "/";
     //     }
     // });

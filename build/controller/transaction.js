@@ -1,3 +1,7 @@
+import { bsAlert, convertToTimestamp } from "/assets/js/helpers.js";
+import Transaction from "../models/transaction.js";
+import { initFirebase } from '/db.js'
+
 function getTransactionFields() {
     return [
         {
@@ -19,7 +23,7 @@ function getTransactionFields() {
             name: "wallet_id",
             type: "select",
             label: "Wallet",
-            options: JSON.parse(localStorage.getItem("wallets"))
+            options: JSON.parse(sessionStorage.getItem("wallets"))
         }
     ]
 }
@@ -27,7 +31,7 @@ function fixTransaction() {
     let { firebase_load, db } = initFirebase();
     getTransaction(db).then(function (data) {
         data.forEach(el => {
-            el.user_id = localStorage.getItem("user_id");
+            el.user_id = sessionStorage.getItem("user_id");
             editTransaction(el);
         });
     });
@@ -41,7 +45,7 @@ function formTransaction($scope, $sce, $routeParams) {
     $scope.title = "Add Transaction";
     $scope.loading = "";
    $scope.wallets = {
-    availableOptions: JSON.parse(localStorage.getItem("wallets")) ,
+    availableOptions: JSON.parse(sessionStorage.getItem("wallets")) ,
     // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
     };
     if ($scope.params.id) {
@@ -50,6 +54,7 @@ function formTransaction($scope, $sce, $routeParams) {
                 data,
                 $scope
             };
+            let transaction = new Transaction(data);
             $scope.description = data.description;
             $scope.money_in = data.money_in;
             $scope.money_out = data.money_out;
@@ -95,6 +100,7 @@ function formTransaction($scope, $sce, $routeParams) {
                 });
             }
         } catch (error) {
+            console.error(error);
             let alert = bsAlert("Error", error, "danger");
             $("#alert").html(alert);
             loading = `<i class="bi bi-x text-danger"></i>`;
@@ -150,7 +156,7 @@ function addTransaction(db, fields) {
     // let date_now = Date.now();
     return tc.add({
         ...fields,
-        // user_id: localStorage.getItem("user_id"),
+        // user_id: sessionStorage.getItem("user_id"),
         // created_timestamp: date_now,
     })
         .then((docRef) => {
@@ -161,6 +167,7 @@ function addTransaction(db, fields) {
             }
         })
         .catch((error) => {
+            console.error(error);
             return {
                 status: "error",
                 message: error
@@ -180,9 +187,21 @@ function editTransaction(fields) {
             }
         })
         .catch((error) => {
+            console.error(error);
             return {
                 status: "error",
                 message: error
             }
         });
+}
+
+export default {
+    getTransactionFields,
+    fixTransaction, 
+    formTransaction,
+    dashboard,
+    getTransaction,
+    getTransactionById,
+    addTransaction,
+    editTransaction
 }

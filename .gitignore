@@ -28,3 +28,4 @@ build/.vscode/settings.json
 py/personal-444404-a1967ae617b1.json
 py/program-db-334c5-firebase-adminsdk-4eftl-39583ba9f8.json
 py/serviceAccount.json
+*.pyc

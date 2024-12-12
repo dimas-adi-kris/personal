@@ -1,20 +1,44 @@
 import { bsAlert, convertToTimestamp } from "/assets/js/helpers.js";
 import { initFirebase } from "/db.js";
+import Model from "./MAIN_MODEL.js";
 
 
-class Transaction {
-    constructor(data) {
-        this.id = data.id || null;
-        this.description = data.description;
-        this.money_in = data.money_in || 0;
-        this.money_out = data.money_out || 0;
-        if (data.id) {
-            this.created_timestamp = new Date(data.created_timestamp);
-        }else{
-            this.created_timestamp = convertToTimestamp(data.created_timestamp || new Date());
-        }
-        this.db = initFirebase().db;
+class Transaction extends Model {
+    constructor() {
+        super();
+        this.collection_name = 'transaction';
     }
+
+    fields() {
+        return [
+            "description",
+            "money_in",
+            "money_out",
+            "created_timestamp",
+            "wallet_id",
+            "tag_id"
+        ]
+    }
+
+    // create(req) {
+    //     let data = {
+    //         ...req,
+    //         created_timestamp: convertToTimestamp(req.created_timestamp) || new Date()
+    //     }
+    //     this.db.collection(this.collection_name).add(data);
+    // }
+
+    // async getAll() {
+    //     let result = [];
+    //     let tc = await this.db.collection(this.collection_name).get();
+    //     tc.forEach(doc => {
+    //         result.push({
+    //             ...doc.data(),
+    //             id: doc.id,
+    //         });
+    //     });
+    //     return result;
+    // }
 
     toObject() {
         return {
@@ -29,9 +53,15 @@ class Transaction {
     save() {
         let data = this.toObject();
         if (this.id) {
-            db.collection('transaction').doc(this.id).update(data);
+            this.db.collection('transaction').doc(this.id).set({
+                ...data,
+                created_timestamp: convertToTimestamp(data.created_timestamp)
+            });
         } else {
-            db.collection('transaction').add(data);
+            this.db.collection('transaction').add({
+                ...data,
+                created_timestamp: convertToTimestamp(data.created_timestamp) || new Date()
+            });
         }
     }
 }

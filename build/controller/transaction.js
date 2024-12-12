@@ -44,17 +44,18 @@ function formTransaction($scope, $sce, $routeParams) {
     $scope.firebase_load = firebase_load;
     $scope.title = "Add Transaction";
     $scope.loading = "";
-   $scope.wallets = {
-    availableOptions: JSON.parse(sessionStorage.getItem("wallets")) ,
-    // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
+    $scope.wallets = {
+        availableOptions: JSON.parse(sessionStorage.getItem("wallets")),
+        // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
     };
     if ($scope.params.id) {
-        getTransactionById($scope.params.id).then(function (data) {
+        let transaction = new Transaction();
+        transaction.findById($scope.params.id).then(function (data) {
             $.exposed_data = {
                 data,
                 $scope
             };
-            let transaction = new Transaction(data);
+            // transaction
             $scope.description = data.description;
             $scope.money_in = data.money_in;
             $scope.money_out = data.money_out;
@@ -151,6 +152,15 @@ async function getTransactionById(id) {
         id: data.id
     }
 }
+/**
+ * Add a new transaction to the database.
+ * @param {Object} db - The firestore database to write to.
+ * @param {Object} fields - The fields to add to the transaction.
+ * @returns {Promise<Object>}
+ *   A promise that resolves to an object with the id of the newly created
+ *   transaction and the passed in fields. If the write fails, the promise will
+ *   reject with an error object.
+ */
 function addTransaction(db, fields) {
     let tc = db.collection('transaction');
     // let date_now = Date.now();
@@ -197,7 +207,7 @@ function editTransaction(fields) {
 
 export default {
     getTransactionFields,
-    fixTransaction, 
+    fixTransaction,
     formTransaction,
     dashboard,
     getTransaction,

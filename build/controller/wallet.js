@@ -1,4 +1,6 @@
-function walletDashboard($scope, $http, $location) {
+import { initFirebase } from '/db.js'
+
+function dashboard($scope, $http, $location) {
     let {firebase_load, db} = initFirebase();
     console.log(
         {
@@ -69,6 +71,12 @@ async function getWallet(db){
     });
     return data;
 
+}
+
+export default {
+    dashboard,
+    add_wallet,
+    
 }
 
 // function getWallet(db) {

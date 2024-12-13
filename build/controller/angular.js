@@ -7,7 +7,7 @@ var angular_app = false;
 // var app = false;
 // var db = false;
 
-var angular_app = angular.module("personal", ["ngRoute","angularjs-dropdown-multiselect"]);
+var angular_app = angular.module("personal", ["ngRoute", "angularjs-dropdown-multiselect"]);
 angular_app.controller("main", Auth.loginPage);
 angular_app.controller("form_transaction", ["$scope", "$sce", '$routeParams', Transaction.formTransaction]);
 angular_app.controller("dashboard", Transaction.dashboard);
@@ -76,3 +76,19 @@ angular_app.config(function ($routeProvider) {
             templateUrl: "views/tag/dashboard.html"
         })
 });
+
+// angular.module('preventTemplateCache')
+//     .factory('preventTemplateCache', function ($injector) {
+//         var cacheBuster = Date.now().toString();
+//         return {
+//             'request': function (config) {
+//                 if (config.url.indexOf('views') !== -1) {
+//                     config.url = config.url + '?t=' + cacheBuster;
+//                 }
+//                 return config;
+//             }
+//         }
+//     })
+//     .config(function ($httpProvider) {
+//         $httpProvider.interceptors.push('preventTemplateCache');
+//     });

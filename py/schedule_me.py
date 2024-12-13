@@ -20,7 +20,12 @@ class PersonalScheduler:
             time.sleep(1)
     
     def add_job(self, func, runtime, tag, *args, **kwargs):
-        self.schedule.every().day.at(runtime).do(func, *args, **kwargs).tag(tag)
+        get_schedule = self.schedule.get_jobs(tag)
+        if len(get_schedule) == 0:
+            self.schedule.every().day.at(runtime).do(func).tag(tag)
+        else:
+            print("Job already exist")
+        # self.schedule.every().day.at(runtime).do(func, *args, **kwargs).tag(tag)
     
     def add_job_every_seconds(self, func, seconds, tag, *args, **kwargs):
         self.schedule.every(seconds).seconds.do(func, *args, **kwargs).tag(tag)
@@ -46,9 +51,10 @@ def job():
 # Run job every 3 second/minute/hour/day/week,
 # Starting 3 second/minute/hour/day/week from now
 # schedule.every(3).seconds.do(job)
-PS = PersonalScheduler()
-PS.add_job_every_seconds(job, 3, "schedule_test")
-PS.run_schedule()
+if __name__ == "__main__":
+    PS = PersonalScheduler()
+    PS.add_job_every_seconds(job, 3, "schedule_test")
+    PS.run_schedule()
 
 # while True:
     # schedule.run_pending()

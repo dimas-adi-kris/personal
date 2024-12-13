@@ -48,10 +48,16 @@ function formTransaction($scope, $sce, $routeParams) {
         availableOptions: JSON.parse(sessionStorage.getItem("wallets")),
         // selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
     };
-    $scope.tags = {
-        availableOptions: JSON.parse(sessionStorage.getItem("tags")),
-        selectedOption: { id: '3', name: 'Option C' } //This sets the default value of the select in the ui
-    }
+    // $scope.tags = {
+    //     availableOptions: JSON.parse(sessionStorage.getItem("tags")),
+    //     selectedOption: { id: '3', name: 'Option C' } //This sets the default value of the select in the ui
+    // }
+    // $scope.example13model = []; 
+    // $scope.example13data = [ {id: 1, label: "David"}, {id: 2, label: "Jhon"}, {id: 3, label: "Lisa"}, {id: 4, label: "Nicole"}, {id: 5, label: "Danny"} ]; 
+    // $scope.example13settings = { smartButtonMaxItems: 3, smartButtonTextConverter: function(itemText, originalItem) { if (itemText === 'Jhon') { return 'Jhonny!'; } return itemText; } };
+    $scope.tags = [];
+    $scope.tagsData = JSON.parse(sessionStorage.getItem("tags"));
+    $scope.tagSettings = { smartButtonMaxItems: 1000, smartButtonTextConverter: function(itemText, originalItem) { return itemText; } };
 
     $scope.computeDescription = function () {
 

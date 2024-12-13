@@ -140,18 +140,16 @@ function logout($scope) {
 }
 
 function initWallet() {
-	// let { db } = initFirebase();
 	let wallet = new WalletModel();
 	wallet.getAll().then(function (data) {
-		sessionStorage.setItem("wallets", JSON.stringify(data));
+		sessionStorage.setItem(wallet.collection_name, JSON.stringify(data));
 	})
 }
 
 function initTag() {
-	let { db } = initFirebase();
 	let tag = new TagModel();
 	tag.getAll().then(function (data) {
-		sessionStorage.setItem("tags", JSON.stringify(data));
+		sessionStorage.setItem(tag.collection_name, JSON.stringify(data));
 	});
 }
 

@@ -11,9 +11,10 @@ function dashboard($scope, $http, $location) {
     $.exposed = { $scope, $http, $location }
     let tag = new Tag();
     $scope.submit = function () {
-        let name = $scope.name;
-        console.log({ $scope, $http, $location, name, });
-        tag.create({ name });
+        let label = $scope.label;
+        let keywords = $scope.keywords;
+        console.log({ $scope, $http, $location, label, });
+        tag.create({ label, keywords });
         // add_tag(db, name)
     }
     var table = new DataTable('#example');
@@ -23,7 +24,7 @@ function dashboard($scope, $http, $location) {
             const date =
                 new Date(el.created_timestamp);
             table.rows.add([
-                [el.name,
+                [el.label,
                     date,]
             ]).draw();
         });

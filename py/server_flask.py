@@ -10,7 +10,7 @@ from threading import Thread
 import multiprocessing
 import schedule
 import time
-
+from schedule_me import PersonalScheduler
 
 app = Flask(__name__)
 
@@ -25,9 +25,8 @@ def hello_world():
 
 @app.route("/launch_qt", methods=["GET"])
 def launch_qt():
-    get_schedule = scheduler.get_jobs('schedule_test')
-    if len(get_schedule) == 0:
-        scheduler.every().day.at("13:00").do(spawn_qt).tag("schedule_test")
+    sched = PersonalScheduler()
+    sched.add_job(spawn_qt, "13:00", "schedule_test")
     all_jobs = scheduler.get_jobs()
     jobs = ''
     for job in all_jobs:
@@ -63,3 +62,7 @@ def run_schedule():
     
 def job():
     print("job")
+    
+    
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=9000)

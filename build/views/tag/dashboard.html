@@ -18,9 +18,14 @@
                             <div class="p-5">
                                 <form class="user">
                                     <div class="form-group">
-                                        <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control form-control-user" name="name"
-                                            placeholder="Enter name..." ng-model="name" />
+                                        <label for="label" class="form-label">Label</label>
+                                        <input type="text" class="form-control form-control-user" name="label"
+                                            placeholder="Enter label..." ng-model="label" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="keywords" class="form-label">Keywords</label>
+                                        <input type="text" class="form-control form-control-user" name="keywords"
+                                            placeholder="Enter keywords..." ng-model="keywords" />
                                     </div>
                                     <div class="form-group">
                                         <button ng-click="submit()" type="button" class="btn btn-primary">
@@ -30,11 +35,11 @@
                                 </form>
                             </div>
                             <div class="p-5">
-                                <h1 class="h1">{{name}}</h1>
+                                <h1 class="h1">{{label}}</h1>
                                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
+                                            <th>Label</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,7 +47,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Name</th>
+                                            <th>Label</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>

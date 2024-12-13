@@ -1,4 +1,4 @@
-import { bsAlert, convertToTimestamp } from "/assets/js/helpers.js";
+import { bsAlert, convertToTimestamp } from "../assets/js/helpers.js";
 import Transaction from "../models/transaction.js";
 import { initFirebase } from '/db.js'
 
@@ -52,6 +52,12 @@ function formTransaction($scope, $sce, $routeParams) {
         availableOptions: JSON.parse(sessionStorage.getItem("tags")),
         selectedOption: { id: '3', name: 'Option C' } //This sets the default value of the select in the ui
     }
+
+    $scope.computeDescription = function () {
+
+    }
+    $scope.example1model = [];
+    $scope.example1data = [{ id: 1, label: "David" }, { id: 2, label: "Jhon" }, { id: 3, label: "Danny" }];
     if ($scope.params.id) {
         let transaction = new Transaction();
         transaction.findById($scope.params.id).then(function (data) {

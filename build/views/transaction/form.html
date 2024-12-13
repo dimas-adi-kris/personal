@@ -22,7 +22,7 @@
                                 <form class="user" name="transactionForm">
                                     <div class="form-group">
                                         <label for="description" class="form-label">description</label>
-                                        <input type="text" class="form-control form-control-user" name="description"
+                                        <input type="text" class="form-control form-control-user" name="description" ng-change="computeDescription()"
                                             placeholder="Enter Description..." ng-model="description" required />
                                         <span style="color:red"
                                             ng-show="transactionForm.description.$dirty && transactionForm.description.$invalid">
@@ -66,6 +66,7 @@
                                         </button>
                                         <div id="loading" style="font-size: 30px"></div>
                                     </div>
+                                    <div ng-dropdown-multiselect="" options="example1data" selected-model="example1model"></div>
                                 </form>
                                 <div class="text-center" ng-include="'/views/sign_out.html'">
                                 </div>

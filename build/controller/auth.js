@@ -1,5 +1,7 @@
 import { initFirebase } from "/db.js";
-import Wallet from "./wallet.js";
+import WalletModel from "../models/wallet.js";
+import TagModel from "../models/tag.js"
+import { bsAlert } from "../assets/js/helpers.js";
 
 /**
  * cyrb53: A non-cryptographic string hash function designed to be fast while maintaining a good distribution for non-pathological keys.
@@ -37,15 +39,10 @@ function login(db, $location) {
 				var credential = result.credential;
 
 				// This gives you a Google Access Token. You can use it to access the Google API.
-				var token = credential.accessToken;
-				sessionStorage.setItem("token", token);
+				// var token = credential.accessToken;
+				// sessionStorage.setItem("token", token);
 				// The signed-in user info.
 				var user = result.user;
-				sessionStorage.setItem("user", JSON.stringify(user));
-				console.log({
-					token,
-					user,
-				});
 				let users = db.collection("users");
 				initWallet();
 				initTag();
@@ -61,14 +58,19 @@ function login(db, $location) {
 						}).then(() => {
 							sessionStorage.setItem("token", token);
 							sessionStorage.setItem("user_id", user.uid);
+							sessionStorage.setItem("user", JSON.stringify(user));
 							window.location.href = "/unauthorized.html";
 						});
 					} else {
 						sessionStorage.setItem("token", doc.data().token);
 						sessionStorage.setItem("user_id", user.uid);
+						sessionStorage.setItem("user", JSON.stringify(user));
 						// $location.path('/form_transaction');
 						window.location.href = "#!form_transaction";
 					}
+				}).finally((data) => {
+					console.log(data);
+
 				});
 				// ...
 			})
@@ -120,6 +122,11 @@ function download(filename, text) {
 function loginPage($scope, $http, $location) {
 	$scope.firebase_load = 'Firebase SDK Loading...';
 	let { firebase_load, db } = initFirebase();
+	if (sessionStorage.getItem("alert")){
+		let alert = bsAlert("Session Expired", sessionStorage.getItem("alert"), 'danger');
+		$scope.alert = alert;
+		sessionStorage.removeItem("alert");
+	}
 	$scope.firebase_load = firebase_load;
 	$scope.signIn = function () {
 		login(db, $location);
@@ -133,15 +140,17 @@ function logout($scope) {
 }
 
 function initWallet() {
-	let { db } = initFirebase();
-	getWallet(db).then(function (data) {
+	// let { db } = initFirebase();
+	let wallet = new WalletModel();
+	wallet.getAll().then(function (data) {
 		sessionStorage.setItem("wallets", JSON.stringify(data));
-	});
+	})
 }
 
 function initTag() {
 	let { db } = initFirebase();
-	getTag(db).then(function (data) {
+	let tag = new TagModel();
+	tag.getAll().then(function (data) {
 		sessionStorage.setItem("tags", JSON.stringify(data));
 	});
 }

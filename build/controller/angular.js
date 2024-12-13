@@ -7,7 +7,7 @@ var angular_app = false;
 // var app = false;
 // var db = false;
 
-var angular_app = angular.module("personal", ["ngRoute"]);
+var angular_app = angular.module("personal", ["ngRoute","angularjs-dropdown-multiselect"]);
 angular_app.controller("main", Auth.loginPage);
 angular_app.controller("form_transaction", ["$scope", "$sce", '$routeParams', Transaction.formTransaction]);
 angular_app.controller("dashboard", Transaction.dashboard);
